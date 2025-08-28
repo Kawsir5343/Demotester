@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gate – Private</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #0d0d0d;
+    --text-color: #f5f5f5;
+    --muted-color: #a0a0a0;
+    --accent-color: #a259ff;
+    --card-bg: #1a1a1a;
+    --border: #2d2d2d;
+    --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    --transition: all 0.3s ease;
+  }
+  body {
+    background: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .gate-wrap {
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    padding: 2rem;
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    animation: popIn 0.8s ease forwards;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.9) translateY(20px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+  .logo-heart {
+    font-size: 3rem;
+    color: var(--accent-color);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .muted {
+    color: var(--muted-color);
+    margin-bottom: 1.5rem;
+  }
+  .input {
+    width: 100%;
+    padding: 12px;
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(162, 89, 255, 0.3);
+  }
+  .btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: var(--accent-color);
+    color: #fff;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn:hover {
+    background: #8e49e2;
+  }
+  .err {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+  }
+</style>
+</head>
+<body>
+  <div class="gate-wrap">
+    <div class="logo-heart">❤</div>
+    <h1>Private Gate</h1>
+    <p class="muted">Enter our special date to unlock</p>
+    <form id="gate-form">
+      <input id="pw" class="input" placeholder="DD-MM-YYYY" maxlength="10" />
+      <button type="submit" class="btn">Unlock</button>
+      <div id="err" class="err"></div>
+    </form>
+  </div>
+<script>
+(function(){
+"use strict";
+const PASSWORD = "25-10-2010";
+const form = document.getElementById("gate-form");
+const pw = document.getElementById("pw");
+const err = document.getElementById("err");
+form.addEventListener("submit",e=>{
+  e.preventDefault();
+  if(pw.value===PASSWORD){
+    window.location.href = "index.html";
+  } else {
+    err.textContent = "Wrong date, try again ❤";
+  }
+});
+})();
+</script>
+</body>
+</html>
