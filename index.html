@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>For {{x}} – Private</title>
+<meta name="description" content="A private, premium love website for {{x}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-color: #0d0d0d;
+    --text-color: #f5f5f5;
+    --muted-color: #a0a0a0;
+    --accent-color: #a259ff;
+    --card-bg: #1a1a1a;
+    --border: #2d2d2d;
+    --soft: #2b2b2b;
+    --shadow: 0 10px 30px rgba(0,0,0,0.4);
+    --transition: all 0.3s ease;
+  }
+  body {
+    background: var(--bg-color);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-color);
+    line-height: 1.6;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  .wrap {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  .bg-grad {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a1a, #2d2d2d);
+    opacity: 0.8;
+    z-index: -2;
+  }
+  .spark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, var(--accent-color) 1px, transparent 1px);
+    background-size: 25px 25px;
+    opacity: 0.15;
+    animation: sparkle 6s linear infinite;
+    z-index: -1;
+  }
+  @keyframes sparkle {
+    from { transform: translateY(0); }
+    to { transform: translateY(-20px); }
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 32px;
+  }
+  .logo-heart {
+    font-size: 3rem;
+    color: var(--accent-color);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+  }
+  .type {
+    font-size: clamp(2rem, 5vw, 3rem);
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 2px solid var(--accent-color);
+    width: 0;
+    animation: typing 3s steps(40, end) forwards, blink 0.75s step-end infinite;
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+  @keyframes blink {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--accent-color); }
+  }
+  .note {
+    background: var(--soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: var(--text-color);
+    transition: var(--transition);
+    animation: popIn 0.6s ease-in-out forwards;
+  }
+  @keyframes popIn {
+    from { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+    to { transform: scale(1) rotate(0); opacity: 1; }
+  }
+  .secret-btn {
+    background: var(--accent-color);
+    color: #fff;
+    animation: glow 2s infinite alternate;
+  }
+  @keyframes glow {
+    from { box-shadow: 0 0 10px var(--accent-color); }
+    to { box-shadow: 0 0 25px var(--accent-color); }
+  }
+  .modal-wrap.visible .modal {
+    animation: slideUp 0.5s ease forwards;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <div class="bg-grad"></div>
+  <div class="spark"></div>
+  <main class="main" id="main">
+    <section class="center">
+      <h2 class="type">Hi {{x}} ❤ This place is only for you…</h2>
+      <p class="muted">A space I built just for us — full of little notes, memories, and love that never fades.</p>
+      <div class="chips">
+        <div class="chip">PRIVATE</div>
+        <button id="music-toggle" class="chip" type="button" disabled>
+          <span id="music-text">Loading music...</span>
+        </button>
+      </div>
+    </section>
+    <section class="board">
+      <div id="notes-container" class="notes-container"></div>
+      <div class="controls">
+        <button id="open-secret" class="secret-btn">❤ Open Secret Letter</button>
+      </div>
+    </section>
+  </main>
+  <section id="secret-modal-wrap" class="modal-wrap">
+    <div class="modal card">
+      <div class="modal-content">
+        <h3>My Secret Letter to {{x}}</h3>
+        <p>You’ve been the brightest star in my life. With you, I found love, peace, and a best friend. No matter where we are, my heart always beats for you.</p>
+        <small>Forever yours, {{xyz}}</small>
+        <button class="close" id="close-secret-modal">✕</button>
+      </div>
+    </div>
+  </section>
+  <section id="note-modal-wrap" class="modal-wrap">
+    <div class="modal card">
+      <div class="modal-content">
+        <p id="note-modal-body"></p>
+        <small>— Yours, {{xyz}}</small>
+        <button class="close" id="close-note-modal">✕</button>
+      </div>
+    </div>
+  </section>
+  <div id="yt-player-container" style="position: absolute; top:-9999px;"></div>
+</div>
+<script>
+(function(){
+"use strict";
+const YT_VIDEO_ID = "0VWjd9O64y4";
+const notesContainer = document.getElementById("notes-container");
+const openSecret = document.getElementById("open-secret");
+const musicToggle = document.getElementById("music-toggle");
+const musicText = document.getElementById("music-text");
+const secretModalWrap = document.getElementById("secret-modal-wrap");
+const noteModalWrap = document.getElementById("note-modal-wrap");
+const noteModalBody = document.getElementById("note-modal-body");
+const notes = [
+  "You make even the darkest days feel bright.",
+  "Your laughter is my favorite melody.",
+  "Every hug from you feels like home.",
+  "I’m proud of the person you are, always.",
+  "Your love makes me fearless.",
+  "You’re my today and all of my tomorrows.",
+  "When I count blessings, I start with you.",
+  "You’re my calm, my chaos, and everything in between.",
+  "I love you more than words will ever explain."
+];
+function placeNotes(){
+  notesContainer.innerHTML = "";
+  notes.forEach((text,i)=>{
+    const note = document.createElement("div");
+    note.className = "note card";
+    note.style.top = Math.random()*80+"%";
+    note.style.left = Math.random()*80+"%";
+    note.textContent = text;
+    note.addEventListener("click",()=>{
+      noteModalBody.textContent = text;
+      openModal(noteModalWrap);
+    });
+    notesContainer.appendChild(note);
+  });
+}
+function openModal(m){ m.classList.add("visible"); }
+function closeModal(m){ m.classList.remove("visible"); }
+document.getElementById("close-secret-modal").onclick=()=>closeModal(secretModalWrap);
+document.getElementById("close-note-modal").onclick=()=>closeModal(noteModalWrap);
+openSecret.onclick=()=>openModal(secretModalWrap);
+let ytPlayer;
+function loadYouTubeAPI(){
+  if(window.YT){ onYouTubeIframeAPIReady(); return; }
+  const tag=document.createElement("script");
+  tag.src="https://www.youtube.com/iframe_api";
+  document.body.appendChild(tag);
+}
+window.onYouTubeIframeAPIReady=function(){
+  ytPlayer=new YT.Player("yt-player-container",{
+    videoId:YT_VIDEO_ID,
+    playerVars:{autoplay:0,controls:0,loop:1,playlist:YT_VIDEO_ID},
+    events:{onReady:onPlayerReady,onStateChange:onPlayerStateChange}
+  });
+};
+function onPlayerReady(){
+  musicToggle.disabled=false;
+  updateMusicButton(false);
+}
+function onPlayerStateChange(e){
+  updateMusicButton(e.data===YT.PlayerState.PLAYING);
+}
+function updateMusicButton(playing){
+  musicText.textContent=playing?"Pause music":"Play music";
+}
+musicToggle.onclick=()=>{
+  if(ytPlayer.getPlayerState()===YT.PlayerState.PLAYING){ ytPlayer.pauseVideo(); }
+  else{ ytPlayer.playVideo(); }
+};
+placeNotes();
+loadYouTubeAPI();
+})();
+</script>
+</body>
+  </html>
+  
